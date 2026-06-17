@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Databricks Data + AI Summit 2026 シナリオ学習ゲーム</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 680px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .header h1 { font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.25rem; }
+  .header p { font-size: 13px; color: #666; }
+
+  .scene-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.12); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .progress-bar-bg { background: #e8e8e8; border-radius: 99px; height: 6px; margin-bottom: 1.5rem; }
+  .progress-bar-fill { background: #534AB7; height: 6px; border-radius: 99px; transition: width 0.4s; }
+  .speaker-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+  .bubble { background: #f5f5f5; border-radius: 12px; padding: 0.75rem 1rem; font-size: 14px; line-height: 1.6; color: #1a1a1a; flex: 1; }
+  .choice-btn { display: block; width: 100%; text-align: left; background: #fff; border: 0.5px solid rgba(0,0,0,0.25); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; font-size: 14px; cursor: pointer; color: #1a1a1a; transition: background 0.15s, border-color 0.15s; font-family: inherit; }
+  .choice-btn:hover:not(:disabled) { background: #f5f5f5; border-color: rgba(0,0,0,0.4); }
+  .choice-btn:disabled { cursor: default; }
+  .choice-btn.correct { border-color: #0F6E56; background: #E1F5EE; color: #085041; }
+  .choice-btn.wrong { border-color: #993C1D; background: #FAECE7; color: #4A1B0C; }
+  .feedback-box { border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem; font-size: 13px; line-height: 1.6; }
+  .feedback-correct { background: #E1F5EE; color: #085041; border-left: 3px solid #0F6E56; }
+  .feedback-wrong { background: #FAECE7; color: #4A1B0C; border-left: 3px solid #993C1D; }
+  .next-btn { background: #534AB7; color: #EEEDFE; border: none; border-radius: 8px; padding: 0.6rem 1.25rem; font-size: 14px; cursor: pointer; margin-top: 0.75rem; font-family: inherit; }
+  .next-btn:hover { background: #3C3489; }
+  .badge { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 500; }
+  .badge-scene { background: #EEEDFE; color: #3C3489; }
+  .badge-score { background: #E1F5EE; color: #085041; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+  .stat-box { background: #f5f5f5; border-radius: 8px; padding: 0.75rem; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 500; color: #1a1a1a; }
+  .stat-lbl { font-size: 11px; color: #666; margin-top: 2px; }
+  .result-title { font-size: 20px; font-weight: 500; text-align: center; margin: 0.5rem 0 1rem; color: #1a1a1a; }
+  .topic-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; background: #EEEDFE; color: #3C3489; margin-bottom: 0.5rem; }
+  .scene-title { font-size: 13px; font-weight: 500; color: #666; margin-bottom: 0.75rem; }
+  .restart-btn { background: #f5f5f5; color: #1a1a1a; border: 0.5px solid rgba(0,0,0,0.2); border-radius: 8px; padding: 0.6rem 1.25rem; font-size: 14px; cursor: pointer; display: block; width: 100%; margin-bottom: 0.5rem; font-family: inherit; }
+  .restart-btn:hover { background: #ebebeb; }
+  .knowledge-card { background: #f5f5f5; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; font-size: 13px; color: #555; line-height: 1.6; }
+  .knowledge-card strong { color: #1a1a1a; font-weight: 500; }
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .question-text { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.75rem; }
+  .review-row { display: flex; align-items: flex-start; gap: 8px; padding: 0.5rem 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); }
+  .review-label { font-size: 13px; color: #666; line-height: 1.5; }
+  .emoji-result { font-size: 40px; margin-bottom: 0.5rem; display: block; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Databricks Data + AI Summit 2026</h1>
+    <p>シナリオで学ぶ最新発表ゲーム</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+const scenarios = [
+  {
+    id: 1,
+    topic: "Lakebase",
+    title: "シーン 1：AIエージェントにデータベースが必要",
+    characters: [
+      { name: "田中（データエンジニア）", initials: "田", color: "#534AB7", bg: "#EEEDFE" },
+      { name: "鈴木（プロダクトマネージャー）", initials: "鈴", color: "#0F6E56", bg: "#E1F5EE" }
+    ],
+    dialogue: [
+      { char: 0, text: "AIエージェントを本番環境に展開したいんですが、エージェントがリアルタイムでデータを読み書きするための低レイテンシなデータベースが必要です。" },
+      { char: 1, text: "Databricksに何か新しいソリューションはありましたか？" }
+    ],
+    question: "今回のData + AI Summit 2026でDatabricksが発表した、AIエージェント向けの操作型データベースは？",
+    choices: [
+      { text: "Delta Lake 4.0 — 分析特化の新バージョン", correct: false },
+      { text: "Lakebase — サーバーレスPostgreSQL、エージェント向け低レイテンシDB", correct: true },
+      { text: "Unity Catalog DB — メタデータ管理の延長線上のDB", correct: false },
+      { text: "MLflow Store — モデル管理用ストレージ", correct: false }
+    ],
+    feedback: {
+      correct: "正解！ LakebaseはサーバーレスのPostgreSQLとして提供され、AIエージェントがリアルタイムでトランザクション処理を行うための低レイテンシなデータベース層です。さらに「Lakebase Search」ではベクター検索＋全文検索もネイティブに提供されます。",
+      wrong: "不正解。正解は「Lakebase」です。DatabricksはAIエージェント向けにサーバーレスPostgreSQLを発表しました。Delta LakeやUnity CatalogはLakebaseとは別のコンポーネントです。"
+    },
+    knowledge: "Lakebase Searchはベクター検索と全文検索の両方を統合しており、エージェントが単一バックエンドで検索・取得を完結できます（AWS・AzureでBeta公開）。"
+  },
+  {
+    id: 2,
+    topic: "Agent Bricks",
+    title: "シーン 2：エージェント開発基盤の選定",
+    characters: [
+      { name: "佐藤（MLエンジニア）", initials: "佐", color: "#993C1D", bg: "#FAECE7" },
+      { name: "高橋（CTO）", initials: "高", color: "#185FA5", bg: "#E6F1FB" }
+    ],
+    dialogue: [
+      { char: 0, text: "社内のデータを活用したAIエージェントを複数構築したいのですが、OpenAI・Anthropic・Geminiなど複数のモデルを使い分けたいです。Databricksで対応できますか？" },
+      { char: 1, text: "今回のSummitで発表されたプラットフォームがありましたね。" }
+    ],
+    question: "複数のLLMプロバイダーに対応し、Unity Catalogとのコンテキスト連携・エージェントメモリ管理をサポートするDatabricksのエージェント開発プラットフォームは？",
+    choices: [
+      { text: "Mosaic AI — モデルトレーニング特化ツール", correct: false },
+      { text: "Agent Bricks — 包括的エージェント開発プラットフォーム", correct: true },
+      { text: "Genie One — ビジネスチーム向けコワーカーAI", correct: false },
+      { text: "AutoML Agents — 自動機械学習エージェント", correct: false }
+    ],
+    feedback: {
+      correct: "正解！ Agent BricksはOpenAI・Anthropic・Gemini・Qwen・Kimi・Grokなど多様なモデルに対応。MCP経由でUnity Catalogに接続し、Lakebaseによるエージェントメモリ管理も可能です。リリース以来10万以上のエージェントが構築されています。",
+      wrong: "不正解。正解は「Agent Bricks」です。Genie Oneはビジネスチーム向けのコワーカーAIで、Agent Bricksは開発者向けのエージェント構築基盤です。"
+    },
+    knowledge: "Agent Bricksはリリース以来、年間1京（1 quadrillion）トークン超を処理。Document Intelligence（PDFなどの文書解析）もGAになりました。"
+  },
+  {
+    id: 3,
+    topic: "Genie Ontology",
+    title: "シーン 3：AIが社内用語を理解できない問題",
+    characters: [
+      { name: "中村（データアナリスト）", initials: "中", color: "#854F0B", bg: "#FAEEDA" },
+      { name: "渡辺（AI推進担当）", initials: "渡", color: "#534AB7", bg: "#EEEDFE" }
+    ],
+    dialogue: [
+      { char: 0, text: "AIに「Q3のMRRを教えて」と聞いても、社内の指標定義を理解していなくて毎回間違った答えが返ってくるんです。呼び出すたびにコンテキストを渡し直すのが面倒で…" },
+      { char: 1, text: "今回のSummitでその問題を解決する発表がありましたよ。Genieに関連したものです。" }
+    ],
+    question: "企業内のデータ・ドキュメント・指標定義などを継続的に学習し、AIが業務コンテキストを自動理解できるようにするDatabricksの新機能は？",
+    choices: [
+      { text: "Genie Ontology — 企業知識を継続学習するコンテキストレイヤー", correct: true },
+      { text: "Unity Catalog Tags — テーブルにタグを付ける機能", correct: false },
+      { text: "RAG Pipeline — 検索拡張生成の汎用パイプライン", correct: false },
+      { text: "Genie Code — コード生成に特化したGenie機能", correct: false }
+    ],
+    feedback: {
+      correct: "正解！ Genie Ontologyは社内のあらゆる知識（データ・ドキュメント・アプリ・人）をグラフとして統合し、GoogleのPageRankにヒントを得たランキングで最も権威ある業務定義を特定します。エージェントが毎回コンテキストを再構築する必要がなくなります。",
+      wrong: "不正解。正解は「Genie Ontology」です。RAGは汎用的なアーキテクチャですが、Genie OntologyはDatabricksが今回発表した企業特化の自己学習型コンテキストレイヤーです。"
+    },
+    knowledge: "Genie OntologyはUnity CatalogのTable Insightsから列レベルの人気シグナルを取り込み、どのカラムが重要かを推論時に判断します。Microsoft 365 Copilot Coworkとも連携可能。"
+  },
+  {
+    id: 4,
+    topic: "OpenSharing",
+    title: "シーン 4：AIエージェントのスキルを共有したい",
+    characters: [
+      { name: "小林（エコシステム担当）", initials: "小", color: "#0F6E56", bg: "#E1F5EE" },
+      { name: "伊藤（パートナー企業）", initials: "伊", color: "#185FA5", bg: "#E6F1FB" }
+    ],
+    dialogue: [
+      { char: 0, text: "自社で構築したAIエージェントのスキルを、取引先や他のシステムと安全に共有する標準的な方法はありますか？ベンダーロックインは避けたいです。" },
+      { char: 1, text: "DatabricksがSummitで新しいオープンプロトコルを発表していましたね。" }
+    ],
+    question: "AIエージェントのスキル共有のために発表された、Linux Foundationのオープンプロトコルは？",
+    choices: [
+      { text: "MCP（Model Context Protocol） — Anthropicが開発したコンテキスト連携仕様", correct: false },
+      { text: "OpenSharing — エージェントスキル共有のオープンプロトコル", correct: true },
+      { text: "Delta Sharing — データセット共有プロトコル（既存）", correct: false },
+      { text: "OpenAgent — OpenAIのエージェント仕様", correct: false }
+    ],
+    feedback: {
+      correct: "正解！ OpenSharingはLinux Foundationのもとで策定された、AIエージェントのスキルを共有するための新しいオープンプロトコルです。ベンダーニュートラルな形でエージェント間の相互運用性を実現します。",
+      wrong: "不正解。正解は「OpenSharing」です。Delta Sharingは既存のデータ共有プロトコルで、MCPはコンテキスト連携の仕様です。OpenSharingはエージェントスキル共有に特化した今回の新発表です。"
+    },
+    knowledge: "MastercardによるCatalog Federationデモも注目を集めました。異なるカタログ間をフェデレーション（連合）することで、データのサイロを解消する取り組みです。"
+  },
+  {
+    id: 5,
+    topic: "Lakehouse//RT & LTAP",
+    title: "シーン 5：リアルタイム分析と統合処理の未来",
+    characters: [
+      { name: "山田（アーキテクト）", initials: "山", color: "#3B6D11", bg: "#EAF3DE" },
+      { name: "木村（データサイエンティスト）", initials: "木", color: "#993556", bg: "#FBEAF0" }
+    ],
+    dialogue: [
+      { char: 0, text: "バッチ処理とリアルタイム処理を別々のスタックで管理するのが限界になってきました。しかもトランザクションと分析も統合したい。" },
+      { char: 1, text: "Databricksが今回、そのための2つの新しいアーキテクチャを発表していましたよね？" }
+    ],
+    question: "今回のSummitで発表された、新コンピュートエンジン「Reyden」搭載のリアルタイム分析基盤の名称は？",
+    choices: [
+      { text: "Lakehouse//RT — Reyden搭載のリアルタイム分析基盤", correct: true },
+      { text: "Delta Live Tables 2.0 — パイプラインの新バージョン", correct: false },
+      { text: "Structured Streaming Pro — Spark Streamingの後継", correct: false },
+      { text: "Photon RT — Photonエンジンのリアルタイム拡張", correct: false }
+    ],
+    feedback: {
+      correct: "正解！ Lakehouse//RTは新コンピュートエンジン「Reyden」を搭載したリアルタイム分析基盤です。また同時に「LTAP（Lake Transactional/Analytical Processing）」も発表され、単一のオープンフォーマットストレージ上でトランザクションと分析を統合するアーキテクチャが提示されました。",
+      wrong: "不正解。正解は「Lakehouse//RT」です。新コンピュートエンジン「Reyden」を搭載し、リアルタイム分析に特化しています。あわせてLTAPというトランザクション＋分析統合アーキテクチャも発表されました。"
+    },
+    knowledge: "LTAPは「Lake Transactional/Analytical Processing」の略で、従来別々だったOLTP（トランザクション処理）とOLAP（分析処理）を単一オープンフォーマット上で統合する新アーキテクチャです。"
+  }
+];
+
+let currentScene = 0;
+let score = 0;
+let answered = false;
+
+function getApp() { return document.getElementById('app'); }
+
+function renderProgress() {
+  const pct = (currentScene / scenarios.length) * 100;
+  return `
+    <div class="progress-row">
+      <span class="badge badge-scene">シーン ${Math.min(currentScene + 1, scenarios.length)} / ${scenarios.length}</span>
+      <span class="badge badge-score">&#9733; ${score} 正解</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+  `;
+}
+
+function renderScene() {
+  const s = scenarios[currentScene];
+  answered = false;
+
+  let dialogueHTML = s.dialogue.map(d => {
+    const ch = s.characters[d.char];
+    return `
+      <div class="speaker-row">
+        <div class="avatar" style="background:${ch.bg};color:${ch.color};">${ch.initials}</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#888;margin-bottom:4px;">${ch.name}</div>
+          <div class="bubble">${d.text}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  let choicesHTML = s.choices.map((c, i) =>
+    `<button class="choice-btn" id="choice-${i}" onclick="handleChoice(${i})">${c.text}</button>`
+  ).join('');
+
+  getApp().innerHTML = `
+    ${renderProgress()}
+    <div class="scene-card">
+      <div class="topic-tag">${s.topic}</div>
+      <div class="scene-title">${s.title}</div>
+      ${dialogueHTML}
+    </div>
+    <div class="scene-card">
+      <div class="question-text">${s.question}</div>
+      <div id="choices-area">${choicesHTML}</div>
+      <div id="feedback-area"></div>
+    </div>
+  `;
+}
+
+function handleChoice(idx) {
+  if (answered) return;
+  answered = true;
+  const s = scenarios[currentScene];
+  const correct = s.choices[idx].correct;
+  if (correct) score++;
+
+  s.choices.forEach((c, i) => {
+    const btn = document.getElementById('choice-' + i);
+    btn.disabled = true;
+    if (c.correct) btn.classList.add('correct');
+    else if (i === idx && !correct) btn.classList.add('wrong');
+  });
+
+  const isLast = currentScene === scenarios.length - 1;
+  document.getElementById('feedback-area').innerHTML = `
+    <div class="feedback-box ${correct ? 'feedback-correct' : 'feedback-wrong'}">
+      <strong>${correct ? '✓ 正解！' : '✗ 不正解'}</strong><br>${correct ? s.feedback.correct : s.feedback.wrong}
+    </div>
+    <div class="knowledge-card"><strong>豆知識：</strong>${s.knowledge}</div>
+    <button class="next-btn" onclick="${isLast ? 'showResult()' : 'nextScene()'}">${isLast ? '結果を見る' : '次のシーンへ →'}</button>
+  `;
+}
+
+function nextScene() {
+  currentScene++;
+  renderScene();
+}
+
+function showResult() {
+  const total = scenarios.length;
+  const pct = Math.round((score / total) * 100);
+  let msg, color;
+  if (score === total) { msg = "パーフェクト！ Databricksの最新発表を完全に理解しています！"; color = "#085041"; }
+  else if (score >= 3) { msg = "よくできました！ 主要な発表をしっかり押さえています。"; color = "#0F6E56"; }
+  else { msg = "もう一度チャレンジして、発表内容を復習しましょう。"; color = "#993C1D"; }
+
+  const reviewHTML = scenarios.map(s => `
+    <div class="review-row">
+      <span class="topic-tag" style="flex-shrink:0;">${s.topic}</span>
+      <span class="review-label">${s.choices.find(c => c.correct).text}</span>
+    </div>`).join('');
+
+  getApp().innerHTML = `
+    <div class="scene-card" style="text-align:center;padding:2rem 1.5rem;">
+      <span class="emoji-result">${score === total ? '🎉' : score >= 3 ? '👍' : '📚'}</span>
+      <div class="result-title">ゲームクリア！</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num" style="color:#534AB7;">${score}</div><div class="stat-lbl">正解数</div></div>
+        <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-lbl">総問題数</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:${color};">${pct}%</div><div class="stat-lbl">正答率</div></div>
+      </div>
+      <div style="font-size:14px;color:${color};padding:0.5rem 0.75rem;background:#f5f5f5;border-radius:8px;">${msg}</div>
+    </div>
+    <div class="scene-card">
+      <div style="font-size:13px;font-weight:500;color:#666;margin-bottom:0.75rem;">今回学んだ発表内容まとめ</div>
+      ${reviewHTML}
+    </div>
+    <button class="restart-btn" onclick="restartGame()">&#8635; もう一度挑戦する</button>
+  `;
+}
+
+function restartGame() {
+  currentScene = 0;
+  score = 0;
+  answered = false;
+  renderScene();
+}
+
+renderScene();
+</script>
+</body>
+</html>

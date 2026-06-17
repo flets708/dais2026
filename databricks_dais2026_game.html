@@ -4,83 +4,258 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Databricks Data + AI Summit 2026 シナリオ学習ゲーム</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Nunito', -apple-system, sans-serif;
     font-size: 15px;
-    background: #f5f5f5;
-    color: #1a1a1a;
+    background: linear-gradient(135deg, #f0eeff 0%, #e8f5f0 50%, #fff3e8 100%);
     min-height: 100vh;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 4rem;
+    color: #2a2a2a;
   }
-  .container { max-width: 680px; margin: 0 auto; }
-  .header { text-align: center; margin-bottom: 2rem; }
-  .header h1 { font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.25rem; }
-  .header p { font-size: 13px; color: #666; }
+  .container { max-width: 660px; margin: 0 auto; }
 
-  .scene-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.12); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
-  .progress-bar-bg { background: #e8e8e8; border-radius: 99px; height: 6px; margin-bottom: 1.5rem; }
-  .progress-bar-fill { background: #534AB7; height: 6px; border-radius: 99px; transition: width 0.4s; }
-  .speaker-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; }
-  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
-  .bubble { background: #f5f5f5; border-radius: 12px; padding: 0.75rem 1rem; font-size: 14px; line-height: 1.6; color: #1a1a1a; flex: 1; }
-  .choice-btn { display: block; width: 100%; text-align: left; background: #fff; border: 0.5px solid rgba(0,0,0,0.25); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; font-size: 14px; cursor: pointer; color: #1a1a1a; transition: background 0.15s, border-color 0.15s; font-family: inherit; }
-  .choice-btn:hover:not(:disabled) { background: #f5f5f5; border-color: rgba(0,0,0,0.4); }
-  .choice-btn:disabled { cursor: default; }
-  .choice-btn.correct { border-color: #0F6E56; background: #E1F5EE; color: #085041; }
-  .choice-btn.wrong { border-color: #993C1D; background: #FAECE7; color: #4A1B0C; }
-  .feedback-box { border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem; font-size: 13px; line-height: 1.6; }
-  .feedback-correct { background: #E1F5EE; color: #085041; border-left: 3px solid #0F6E56; }
-  .feedback-wrong { background: #FAECE7; color: #4A1B0C; border-left: 3px solid #993C1D; }
-  .next-btn { background: #534AB7; color: #EEEDFE; border: none; border-radius: 8px; padding: 0.6rem 1.25rem; font-size: 14px; cursor: pointer; margin-top: 0.75rem; font-family: inherit; }
-  .next-btn:hover { background: #3C3489; }
-  .badge { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 500; }
-  .badge-scene { background: #EEEDFE; color: #3C3489; }
-  .badge-score { background: #E1F5EE; color: #085041; }
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(83,74,183,0.1);
+  }
+  .header-mascots { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin-bottom: 0.75rem; }
+  .header h1 { font-size: 17px; font-weight: 700; color: #3C3489; margin-bottom: 0.2rem; }
+  .header p { font-size: 13px; color: #888; }
+
+  .progress-wrap { margin-bottom: 1rem; }
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .progress-bar-bg { background: #e0ddf8; border-radius: 99px; height: 8px; }
+  .progress-bar-fill { background: linear-gradient(90deg, #7F77DD, #534AB7); height: 8px; border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 4px 12px; border-radius: 99px; font-weight: 700; }
+  .badge-scene { background: #EEEDFE; color: #534AB7; }
+  .badge-score { background: #E1F5EE; color: #0F6E56; }
+
+  .scene-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .topic-tag {
+    display: inline-block; font-size: 11px; padding: 3px 10px;
+    border-radius: 99px; background: #EEEDFE; color: #534AB7;
+    font-weight: 700; margin-bottom: 0.6rem; letter-spacing: 0.3px;
+  }
+  .scene-title { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 1rem; }
+
+  .speaker-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1rem; }
+  .speaker-row.reverse { flex-direction: row-reverse; }
+  .avatar-wrap { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .avatar-wrap .char-name { font-size: 10px; color: #aaa; font-weight: 600; white-space: nowrap; }
+  .bubble {
+    position: relative;
+    border-radius: 16px;
+    padding: 0.7rem 1rem;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: calc(100% - 70px);
+  }
+  .bubble-cat { background: #FFF3E8; color: #5c3a00; border-bottom-left-radius: 4px; }
+  .bubble-owl { background: #EEEDFE; color: #2e1f7a; border-bottom-right-radius: 4px; }
+  .speaker-row.reverse .bubble { border-bottom-right-radius: 4px; border-bottom-left-radius: 16px; }
+
+  .question-box {
+    background: linear-gradient(135deg, #534AB7, #7F77DD);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .choice-btn {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; text-align: left;
+    background: #fafafa;
+    border: 2px solid #ede9ff;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; color: #2a2a2a;
+    transition: all 0.15s; font-family: inherit;
+  }
+  .choice-btn:hover:not(:disabled) { background: #f0eeff; border-color: #7F77DD; transform: translateY(-1px); }
+  .choice-btn:disabled { cursor: default; transform: none; }
+  .choice-btn.correct { border-color: #1D9E75; background: #E1F5EE; color: #085041; }
+  .choice-btn.wrong { border-color: #D85A30; background: #FAECE7; color: #4A1B0C; }
+  .choice-letter {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    background: #ede9ff; color: #534AB7;
+  }
+  .choice-btn.correct .choice-letter { background: #1D9E75; color: white; }
+  .choice-btn.wrong .choice-letter { background: #D85A30; color: white; }
+
+  .feedback-box {
+    border-radius: 14px; padding: 0.85rem 1rem;
+    margin-top: 0.75rem; font-size: 13px; line-height: 1.7; font-weight: 600;
+  }
+  .feedback-correct { background: #E1F5EE; color: #085041; border-left: 4px solid #1D9E75; }
+  .feedback-wrong { background: #FAECE7; color: #4A1B0C; border-left: 4px solid #D85A30; }
+
+  .knowledge-card {
+    background: #fffbf0; border-radius: 12px; padding: 0.75rem 1rem;
+    margin-top: 0.6rem; font-size: 13px; color: #5c4a00; line-height: 1.6;
+    border-left: 4px solid #EF9F27; font-weight: 600;
+  }
+
+  .next-btn {
+    background: linear-gradient(135deg, #534AB7, #7F77DD);
+    color: white; border: none; border-radius: 12px;
+    padding: 0.65rem 1.5rem; font-size: 14px; font-weight: 700;
+    cursor: pointer; margin-top: 0.75rem; font-family: inherit;
+    box-shadow: 0 3px 10px rgba(83,74,183,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .next-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(83,74,183,0.35); }
+
   .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
-  .stat-box { background: #f5f5f5; border-radius: 8px; padding: 0.75rem; text-align: center; }
-  .stat-num { font-size: 22px; font-weight: 500; color: #1a1a1a; }
-  .stat-lbl { font-size: 11px; color: #666; margin-top: 2px; }
-  .result-title { font-size: 20px; font-weight: 500; text-align: center; margin: 0.5rem 0 1rem; color: #1a1a1a; }
-  .topic-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; background: #EEEDFE; color: #3C3489; margin-bottom: 0.5rem; }
-  .scene-title { font-size: 13px; font-weight: 500; color: #666; margin-bottom: 0.75rem; }
-  .restart-btn { background: #f5f5f5; color: #1a1a1a; border: 0.5px solid rgba(0,0,0,0.2); border-radius: 8px; padding: 0.6rem 1.25rem; font-size: 14px; cursor: pointer; display: block; width: 100%; margin-bottom: 0.5rem; font-family: inherit; }
-  .restart-btn:hover { background: #ebebeb; }
-  .knowledge-card { background: #f5f5f5; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.5rem; font-size: 13px; color: #555; line-height: 1.6; }
-  .knowledge-card strong { color: #1a1a1a; font-weight: 500; }
-  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-  .question-text { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.75rem; }
-  .review-row { display: flex; align-items: flex-start; gap: 8px; padding: 0.5rem 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); }
-  .review-label { font-size: 13px; color: #666; line-height: 1.5; }
-  .emoji-result { font-size: 40px; margin-bottom: 0.5rem; display: block; }
+  .stat-box { background: #f8f6ff; border-radius: 14px; padding: 0.9rem; text-align: center; }
+  .stat-num { font-size: 26px; font-weight: 700; }
+  .stat-lbl { font-size: 11px; color: #888; margin-top: 2px; font-weight: 600; }
+  .result-title { font-size: 22px; font-weight: 700; text-align: center; margin: 0.5rem 0 1.25rem; color: #3C3489; }
+
+  .review-row {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 0.6rem 0; border-bottom: 1px dashed #ede9ff;
+  }
+  .review-label { font-size: 13px; color: #555; line-height: 1.5; font-weight: 600; }
+  .restart-btn {
+    background: white; color: #534AB7; border: 2px solid #ede9ff;
+    border-radius: 12px; padding: 0.65rem 1.25rem; font-size: 14px; font-weight: 700;
+    cursor: pointer; display: block; width: 100%; margin-bottom: 0.5rem;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .restart-btn:hover { background: #f0eeff; border-color: #7F77DD; }
 </style>
 </head>
 <body>
 <div class="container">
+
   <div class="header">
+    <div class="header-mascots">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cat (orange) -->
+        <ellipse cx="28" cy="32" rx="20" ry="18" fill="#FFB347"/>
+        <!-- ears -->
+        <polygon points="12,18 8,6 20,14" fill="#FFB347"/>
+        <polygon points="44,18 48,6 36,14" fill="#FFB347"/>
+        <polygon points="13,17 10,9 19,14" fill="#FF8C69"/>
+        <polygon points="43,17 46,9 37,14" fill="#FF8C69"/>
+        <!-- face -->
+        <ellipse cx="22" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+        <ellipse cx="34" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+        <ellipse cx="21" cy="29" rx="1.2" ry="1.5" fill="white"/>
+        <ellipse cx="33" cy="29" rx="1.2" ry="1.5" fill="white"/>
+        <ellipse cx="28" cy="35" rx="2.5" ry="1.8" fill="#FF8C69"/>
+        <line x1="28" y1="35" x2="28" y2="38" stroke="#2a1a00" stroke-width="1.2"/>
+        <!-- whiskers -->
+        <line x1="10" y1="34" x2="24" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="10" y1="37" x2="24" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="46" y1="34" x2="32" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="46" y1="37" x2="32" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <!-- blush -->
+        <ellipse cx="16" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+        <ellipse cx="40" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+      </svg>
+      <svg width="20" height="20" viewBox="0 0 20 20"><text y="16" font-size="14" fill="#aaa">💬</text></svg>
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Owl (purple) -->
+        <ellipse cx="28" cy="32" rx="18" ry="17" fill="#7F77DD"/>
+        <!-- ear tufts -->
+        <polygon points="20,16 17,6 24,13" fill="#534AB7"/>
+        <polygon points="36,16 39,6 32,13" fill="#534AB7"/>
+        <!-- belly -->
+        <ellipse cx="28" cy="36" rx="10" ry="9" fill="#EEEDFE"/>
+        <!-- big eyes -->
+        <circle cx="21" cy="28" r="7" fill="white"/>
+        <circle cx="35" cy="28" r="7" fill="white"/>
+        <circle cx="21" cy="28" r="4.5" fill="#2a1a5e"/>
+        <circle cx="35" cy="28" r="4.5" fill="#2a1a5e"/>
+        <circle cx="22.5" cy="26.5" r="1.5" fill="white"/>
+        <circle cx="36.5" cy="26.5" r="1.5" fill="white"/>
+        <!-- beak -->
+        <polygon points="28,33 25,37 31,37" fill="#EF9F27"/>
+        <!-- wing hints -->
+        <ellipse cx="12" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(-15 12 38)"/>
+        <ellipse cx="44" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(15 44 38)"/>
+      </svg>
+    </div>
     <h1>Databricks Data + AI Summit 2026</h1>
-    <p>シナリオで学ぶ最新発表ゲーム</p>
+    <p>ニャンとフクちゃんと一緒にシナリオで学ぼう！</p>
   </div>
+
   <div id="app"></div>
 </div>
 
 <script>
+const CAT_SVG = `<svg width="48" height="48" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="28" cy="32" rx="20" ry="18" fill="#FFB347"/>
+  <polygon points="12,18 8,6 20,14" fill="#FFB347"/>
+  <polygon points="44,18 48,6 36,14" fill="#FFB347"/>
+  <polygon points="13,17 10,9 19,14" fill="#FF8C69"/>
+  <polygon points="43,17 46,9 37,14" fill="#FF8C69"/>
+  <ellipse cx="22" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+  <ellipse cx="34" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+  <ellipse cx="21" cy="29" rx="1.2" ry="1.5" fill="white"/>
+  <ellipse cx="33" cy="29" rx="1.2" ry="1.5" fill="white"/>
+  <ellipse cx="28" cy="35" rx="2.5" ry="1.8" fill="#FF8C69"/>
+  <line x1="28" y1="35" x2="28" y2="38" stroke="#2a1a00" stroke-width="1.2"/>
+  <line x1="10" y1="34" x2="24" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+  <line x1="10" y1="37" x2="24" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+  <line x1="46" y1="34" x2="32" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+  <line x1="46" y1="37" x2="32" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+  <ellipse cx="16" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+  <ellipse cx="40" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+</svg>`;
+
+const OWL_SVG = `<svg width="48" height="48" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="28" cy="32" rx="18" ry="17" fill="#7F77DD"/>
+  <polygon points="20,16 17,6 24,13" fill="#534AB7"/>
+  <polygon points="36,16 39,6 32,13" fill="#534AB7"/>
+  <ellipse cx="28" cy="36" rx="10" ry="9" fill="#EEEDFE"/>
+  <circle cx="21" cy="28" r="7" fill="white"/>
+  <circle cx="35" cy="28" r="7" fill="white"/>
+  <circle cx="21" cy="28" r="4.5" fill="#2a1a5e"/>
+  <circle cx="35" cy="28" r="4.5" fill="#2a1a5e"/>
+  <circle cx="22.5" cy="26.5" r="1.5" fill="white"/>
+  <circle cx="36.5" cy="26.5" r="1.5" fill="white"/>
+  <polygon points="28,33 25,37 31,37" fill="#EF9F27"/>
+  <ellipse cx="12" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(-15 12 38)"/>
+  <ellipse cx="44" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(15 44 38)"/>
+</svg>`;
+
 const scenarios = [
   {
     id: 1,
     topic: "Lakebase",
     title: "シーン 1：AIエージェントにデータベースが必要",
     characters: [
-      { name: "田中（データエンジニア）", initials: "田", color: "#534AB7", bg: "#EEEDFE" },
-      { name: "鈴木（プロダクトマネージャー）", initials: "鈴", color: "#0F6E56", bg: "#E1F5EE" }
+      { name: "ニャン（データエンジニア）", type: "cat" },
+      { name: "フクちゃん（プロダクトマネージャー）", type: "owl" }
     ],
     dialogue: [
-      { char: 0, text: "AIエージェントを本番環境に展開したいんですが、エージェントがリアルタイムでデータを読み書きするための低レイテンシなデータベースが必要です。" },
-      { char: 1, text: "Databricksに何か新しいソリューションはありましたか？" }
+      { char: 0, text: "AIエージェントを本番環境に展開したいんだけど、エージェントがリアルタイムでデータを読み書きするための低レイテンシなDBが必要なんだよね〜" },
+      { char: 1, text: "ふっふっふ、それならDatabricksが今回のSummitでぴったりなものを発表していたよ！なんだか知ってる？" }
     ],
-    question: "今回のData + AI Summit 2026でDatabricksが発表した、AIエージェント向けの操作型データベースは？",
+    question: "Data + AI Summit 2026でDatabricksが発表した、AIエージェント向けの操作型データベースは？",
     choices: [
       { text: "Delta Lake 4.0 — 分析特化の新バージョン", correct: false },
       { text: "Lakebase — サーバーレスPostgreSQL、エージェント向け低レイテンシDB", correct: true },
@@ -88,22 +263,22 @@ const scenarios = [
       { text: "MLflow Store — モデル管理用ストレージ", correct: false }
     ],
     feedback: {
-      correct: "正解！ LakebaseはサーバーレスのPostgreSQLとして提供され、AIエージェントがリアルタイムでトランザクション処理を行うための低レイテンシなデータベース層です。さらに「Lakebase Search」ではベクター検索＋全文検索もネイティブに提供されます。",
-      wrong: "不正解。正解は「Lakebase」です。DatabricksはAIエージェント向けにサーバーレスPostgreSQLを発表しました。Delta LakeやUnity CatalogはLakebaseとは別のコンポーネントです。"
+      correct: "🎉 正解！ LakebaseはサーバーレスのPostgreSQLとして提供され、AIエージェントがリアルタイムでトランザクション処理を行うための低レイテンシなデータベース層です。「Lakebase Search」ではベクター検索＋全文検索もネイティブに使えます！",
+      wrong: "😿 不正解... 正解は「Lakebase」です。DatabricksはAIエージェント向けにサーバーレスPostgreSQLを発表しました。Delta LakeやUnity CatalogはLakebaseとは別のコンポーネントです。"
     },
-    knowledge: "Lakebase Searchはベクター検索と全文検索の両方を統合しており、エージェントが単一バックエンドで検索・取得を完結できます（AWS・AzureでBeta公開）。"
+    knowledge: "💡 Lakebase SearchはAWS・AzureでBeta公開中！ベクター検索と全文検索を統合しているので、エージェントが単一バックエンドだけで検索・取得を完結できます。"
   },
   {
     id: 2,
     topic: "Agent Bricks",
     title: "シーン 2：エージェント開発基盤の選定",
     characters: [
-      { name: "佐藤（MLエンジニア）", initials: "佐", color: "#993C1D", bg: "#FAECE7" },
-      { name: "高橋（CTO）", initials: "高", color: "#185FA5", bg: "#E6F1FB" }
+      { name: "ニャン（MLエンジニア）", type: "cat" },
+      { name: "フクちゃん（CTO）", type: "owl" }
     ],
     dialogue: [
-      { char: 0, text: "社内のデータを活用したAIエージェントを複数構築したいのですが、OpenAI・Anthropic・Geminiなど複数のモデルを使い分けたいです。Databricksで対応できますか？" },
-      { char: 1, text: "今回のSummitで発表されたプラットフォームがありましたね。" }
+      { char: 0, text: "社内データ活用のAIエージェントを作りたいんだけど、OpenAI・Anthropic・Geminiとか複数のモデルを使い分けたくて。Databricksで全部カバーできるの？" },
+      { char: 1, text: "もちろん！今回のSummitで発表されたプラットフォームがあるよ。マルチモデル対応でUnity Catalogとも連携できるんだって！" }
     ],
     question: "複数のLLMプロバイダーに対応し、Unity Catalogとのコンテキスト連携・エージェントメモリ管理をサポートするDatabricksのエージェント開発プラットフォームは？",
     choices: [
@@ -113,22 +288,22 @@ const scenarios = [
       { text: "AutoML Agents — 自動機械学習エージェント", correct: false }
     ],
     feedback: {
-      correct: "正解！ Agent BricksはOpenAI・Anthropic・Gemini・Qwen・Kimi・Grokなど多様なモデルに対応。MCP経由でUnity Catalogに接続し、Lakebaseによるエージェントメモリ管理も可能です。リリース以来10万以上のエージェントが構築されています。",
-      wrong: "不正解。正解は「Agent Bricks」です。Genie Oneはビジネスチーム向けのコワーカーAIで、Agent Bricksは開発者向けのエージェント構築基盤です。"
+      correct: "🎉 正解！ Agent BricksはOpenAI・Anthropic・Gemini・Qwen・Kimi・Grokなど多様なモデルに対応。MCP経由でUnity Catalogに接続し、Lakebaseでエージェントメモリも管理できます！リリース以来10万以上のエージェントが構築されています。",
+      wrong: "😿 不正解... 正解は「Agent Bricks」です。Genie Oneはビジネスチーム向けのコワーカーAIで、Agent Bricksは開発者向けのエージェント構築基盤ですよ。"
     },
-    knowledge: "Agent Bricksはリリース以来、年間1京（1 quadrillion）トークン超を処理。Document Intelligence（PDFなどの文書解析）もGAになりました。"
+    knowledge: "💡 Agent Bricksは年間1京（1 quadrillion）トークン超を処理！Document Intelligence（PDFなどの文書解析）もGAになりました。"
   },
   {
     id: 3,
     topic: "Genie Ontology",
     title: "シーン 3：AIが社内用語を理解できない問題",
     characters: [
-      { name: "中村（データアナリスト）", initials: "中", color: "#854F0B", bg: "#FAEEDA" },
-      { name: "渡辺（AI推進担当）", initials: "渡", color: "#534AB7", bg: "#EEEDFE" }
+      { name: "ニャン（データアナリスト）", type: "cat" },
+      { name: "フクちゃん（AI推進担当）", type: "owl" }
     ],
     dialogue: [
-      { char: 0, text: "AIに「Q3のMRRを教えて」と聞いても、社内の指標定義を理解していなくて毎回間違った答えが返ってくるんです。呼び出すたびにコンテキストを渡し直すのが面倒で…" },
-      { char: 1, text: "今回のSummitでその問題を解決する発表がありましたよ。Genieに関連したものです。" }
+      { char: 0, text: "AIに「Q3のMRRを教えて」って聞いても、社内の指標定義を分かってないから毎回間違えるんだよ〜。毎回コンテキストを渡し直すのも面倒だし…" },
+      { char: 1, text: "それ、まさに今回のSummitで解決策が発表されたよ！Genieに関連した新機能で、企業の知識を自動で学習し続けるんだって！" }
     ],
     question: "企業内のデータ・ドキュメント・指標定義などを継続的に学習し、AIが業務コンテキストを自動理解できるようにするDatabricksの新機能は？",
     choices: [
@@ -138,22 +313,22 @@ const scenarios = [
       { text: "Genie Code — コード生成に特化したGenie機能", correct: false }
     ],
     feedback: {
-      correct: "正解！ Genie Ontologyは社内のあらゆる知識（データ・ドキュメント・アプリ・人）をグラフとして統合し、GoogleのPageRankにヒントを得たランキングで最も権威ある業務定義を特定します。エージェントが毎回コンテキストを再構築する必要がなくなります。",
-      wrong: "不正解。正解は「Genie Ontology」です。RAGは汎用的なアーキテクチャですが、Genie OntologyはDatabricksが今回発表した企業特化の自己学習型コンテキストレイヤーです。"
+      correct: "🎉 正解！ Genie Ontologyは社内のあらゆる知識（データ・ドキュメント・アプリ・人）をグラフとして統合し、GoogleのPageRankにヒントを得たランキングで最も権威ある業務定義を自動特定します！",
+      wrong: "😿 不正解... 正解は「Genie Ontology」です。RAGは汎用アーキテクチャですが、Genie OntologyはDatabricksが発表した企業特化の自己学習型コンテキストレイヤーです。"
     },
-    knowledge: "Genie OntologyはUnity CatalogのTable Insightsから列レベルの人気シグナルを取り込み、どのカラムが重要かを推論時に判断します。Microsoft 365 Copilot Coworkとも連携可能。"
+    knowledge: "💡 Genie OntologyはMicrosoft 365 Copilot Coworkとも連携可能！Unity CatalogのTable Insightsから列レベルの人気シグナルを取り込んで、重要なカラムを自動判断します。"
   },
   {
     id: 4,
     topic: "OpenSharing",
     title: "シーン 4：AIエージェントのスキルを共有したい",
     characters: [
-      { name: "小林（エコシステム担当）", initials: "小", color: "#0F6E56", bg: "#E1F5EE" },
-      { name: "伊藤（パートナー企業）", initials: "伊", color: "#185FA5", bg: "#E6F1FB" }
+      { name: "ニャン（エコシステム担当）", type: "cat" },
+      { name: "フクちゃん（パートナー企業）", type: "owl" }
     ],
     dialogue: [
-      { char: 0, text: "自社で構築したAIエージェントのスキルを、取引先や他のシステムと安全に共有する標準的な方法はありますか？ベンダーロックインは避けたいです。" },
-      { char: 1, text: "DatabricksがSummitで新しいオープンプロトコルを発表していましたね。" }
+      { char: 0, text: "うちで作ったAIエージェントのスキルを取引先と共有したいんだけど、ベンダーロックインはイヤだし、標準的なやり方ってないの？" },
+      { char: 1, text: "ちょうどいい発表があったよ！DatabricksがSummitでLinux Foundation公認のオープンプロトコルを発表してたんだ！" }
     ],
     question: "AIエージェントのスキル共有のために発表された、Linux Foundationのオープンプロトコルは？",
     choices: [
@@ -163,22 +338,22 @@ const scenarios = [
       { text: "OpenAgent — OpenAIのエージェント仕様", correct: false }
     ],
     feedback: {
-      correct: "正解！ OpenSharingはLinux Foundationのもとで策定された、AIエージェントのスキルを共有するための新しいオープンプロトコルです。ベンダーニュートラルな形でエージェント間の相互運用性を実現します。",
-      wrong: "不正解。正解は「OpenSharing」です。Delta Sharingは既存のデータ共有プロトコルで、MCPはコンテキスト連携の仕様です。OpenSharingはエージェントスキル共有に特化した今回の新発表です。"
+      correct: "🎉 正解！ OpenSharingはLinux Foundationのもとで策定された、AIエージェントのスキルを共有するためのオープンプロトコルです。ベンダーニュートラルにエージェント間の相互運用性を実現します！",
+      wrong: "😿 不正解... 正解は「OpenSharing」です。Delta Sharingは既存のデータ共有プロトコル、MCPはコンテキスト連携仕様で、OpenSharingはエージェントスキル共有に特化した今回の新発表ですよ。"
     },
-    knowledge: "MastercardによるCatalog Federationデモも注目を集めました。異なるカタログ間をフェデレーション（連合）することで、データのサイロを解消する取り組みです。"
+    knowledge: "💡 MastercardによるCatalog Federationデモも注目を集めました！異なるカタログ間を連合（フェデレーション）してデータのサイロを解消する取り組みです。"
   },
   {
     id: 5,
     topic: "Lakehouse//RT & LTAP",
     title: "シーン 5：リアルタイム分析と統合処理の未来",
     characters: [
-      { name: "山田（アーキテクト）", initials: "山", color: "#3B6D11", bg: "#EAF3DE" },
-      { name: "木村（データサイエンティスト）", initials: "木", color: "#993556", bg: "#FBEAF0" }
+      { name: "ニャン（アーキテクト）", type: "cat" },
+      { name: "フクちゃん（データサイエンティスト）", type: "owl" }
     ],
     dialogue: [
-      { char: 0, text: "バッチ処理とリアルタイム処理を別々のスタックで管理するのが限界になってきました。しかもトランザクションと分析も統合したい。" },
-      { char: 1, text: "Databricksが今回、そのための2つの新しいアーキテクチャを発表していましたよね？" }
+      { char: 0, text: "バッチ処理とリアルタイム処理を別々のスタックで管理するの、もう限界なんだよね。トランザクションと分析も一緒にしたいし…" },
+      { char: 1, text: "ふっふっふ、今回のSummitでDatabricksがそれを解決する2つの新アーキテクチャを発表してたよ！" }
     ],
     question: "今回のSummitで発表された、新コンピュートエンジン「Reyden」搭載のリアルタイム分析基盤の名称は？",
     choices: [
@@ -188,10 +363,10 @@ const scenarios = [
       { text: "Photon RT — Photonエンジンのリアルタイム拡張", correct: false }
     ],
     feedback: {
-      correct: "正解！ Lakehouse//RTは新コンピュートエンジン「Reyden」を搭載したリアルタイム分析基盤です。また同時に「LTAP（Lake Transactional/Analytical Processing）」も発表され、単一のオープンフォーマットストレージ上でトランザクションと分析を統合するアーキテクチャが提示されました。",
-      wrong: "不正解。正解は「Lakehouse//RT」です。新コンピュートエンジン「Reyden」を搭載し、リアルタイム分析に特化しています。あわせてLTAPというトランザクション＋分析統合アーキテクチャも発表されました。"
+      correct: "🎉 正解！ Lakehouse//RTは新コンピュートエンジン「Reyden」搭載のリアルタイム分析基盤です！同時に「LTAP」も発表され、単一のオープンフォーマットストレージでトランザクション＋分析を統合するアーキテクチャが示されました。",
+      wrong: "😿 不正解... 正解は「Lakehouse//RT」です。新エンジン「Reyden」を搭載したリアルタイム分析基盤です。LTAPというトランザクション＋分析統合アーキテクチャとセットで発表されました！"
     },
-    knowledge: "LTAPは「Lake Transactional/Analytical Processing」の略で、従来別々だったOLTP（トランザクション処理）とOLAP（分析処理）を単一オープンフォーマット上で統合する新アーキテクチャです。"
+    knowledge: "💡 LTAPは「Lake Transactional/Analytical Processing」の略！従来別々だったOLTP（トランザクション処理）とOLAP（分析処理）を単一オープンフォーマット上で統合する新アーキテクチャです。"
   }
 ];
 
@@ -201,15 +376,20 @@ let answered = false;
 
 function getApp() { return document.getElementById('app'); }
 
+function getAvatarSVG(type) {
+  return type === 'cat' ? CAT_SVG : OWL_SVG;
+}
+
 function renderProgress() {
   const pct = (currentScene / scenarios.length) * 100;
   return `
-    <div class="progress-row">
-      <span class="badge badge-scene">シーン ${Math.min(currentScene + 1, scenarios.length)} / ${scenarios.length}</span>
-      <span class="badge badge-score">&#9733; ${score} 正解</span>
-    </div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-  `;
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span class="badge badge-scene">📖 シーン ${Math.min(currentScene + 1, scenarios.length)} / ${scenarios.length}</span>
+        <span class="badge badge-score">⭐ ${score} 正解</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
 }
 
 function renderScene() {
@@ -218,33 +398,37 @@ function renderScene() {
 
   let dialogueHTML = s.dialogue.map(d => {
     const ch = s.characters[d.char];
+    const isOwl = ch.type === 'owl';
     return `
-      <div class="speaker-row">
-        <div class="avatar" style="background:${ch.bg};color:${ch.color};">${ch.initials}</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;color:#888;margin-bottom:4px;">${ch.name}</div>
-          <div class="bubble">${d.text}</div>
+      <div class="speaker-row${isOwl ? ' reverse' : ''}">
+        <div class="avatar-wrap">
+          ${getAvatarSVG(ch.type)}
+          <span class="char-name">${ch.name.split('（')[0]}</span>
         </div>
+        <div class="bubble bubble-${ch.type}">${d.text}</div>
       </div>`;
   }).join('');
 
+  const letters = ['A', 'B', 'C', 'D'];
   let choicesHTML = s.choices.map((c, i) =>
-    `<button class="choice-btn" id="choice-${i}" onclick="handleChoice(${i})">${c.text}</button>`
+    `<button class="choice-btn" id="choice-${i}" onclick="handleChoice(${i})">
+      <span class="choice-letter">${letters[i]}</span>
+      <span>${c.text}</span>
+    </button>`
   ).join('');
 
   getApp().innerHTML = `
     ${renderProgress()}
     <div class="scene-card">
-      <div class="topic-tag">${s.topic}</div>
+      <div class="topic-tag">📌 ${s.topic}</div>
       <div class="scene-title">${s.title}</div>
       ${dialogueHTML}
     </div>
     <div class="scene-card">
-      <div class="question-text">${s.question}</div>
+      <div class="question-box">🤔 ${s.question}</div>
       <div id="choices-area">${choicesHTML}</div>
       <div id="feedback-area"></div>
-    </div>
-  `;
+    </div>`;
 }
 
 function handleChoice(idx) {
@@ -264,11 +448,10 @@ function handleChoice(idx) {
   const isLast = currentScene === scenarios.length - 1;
   document.getElementById('feedback-area').innerHTML = `
     <div class="feedback-box ${correct ? 'feedback-correct' : 'feedback-wrong'}">
-      <strong>${correct ? '✓ 正解！' : '✗ 不正解'}</strong><br>${correct ? s.feedback.correct : s.feedback.wrong}
+      ${correct ? s.feedback.correct : s.feedback.wrong}
     </div>
-    <div class="knowledge-card"><strong>豆知識：</strong>${s.knowledge}</div>
-    <button class="next-btn" onclick="${isLast ? 'showResult()' : 'nextScene()'}">${isLast ? '結果を見る' : '次のシーンへ →'}</button>
-  `;
+    <div class="knowledge-card">${s.knowledge}</div>
+    <button class="next-btn" onclick="${isLast ? 'showResult()' : 'nextScene()'}">${isLast ? '結果を見る 🎊' : '次のシーンへ →'}</button>`;
 }
 
 function nextScene() {
@@ -279,10 +462,10 @@ function nextScene() {
 function showResult() {
   const total = scenarios.length;
   const pct = Math.round((score / total) * 100);
-  let msg, color;
-  if (score === total) { msg = "パーフェクト！ Databricksの最新発表を完全に理解しています！"; color = "#085041"; }
-  else if (score >= 3) { msg = "よくできました！ 主要な発表をしっかり押さえています。"; color = "#0F6E56"; }
-  else { msg = "もう一度チャレンジして、発表内容を復習しましょう。"; color = "#993C1D"; }
+  let msg, color, emoji;
+  if (score === total) { msg = "パーフェクト！ Databricksの最新発表を完全に理解しているニャ！"; color = "#085041"; emoji = "🏆"; }
+  else if (score >= 3) { msg = "よくできました！ 主要な発表をしっかり押さえているよ！"; color = "#0F6E56"; emoji = "🎉"; }
+  else { msg = "もう一度チャレンジして、発表内容を復習しよう！"; color = "#993C1D"; emoji = "📚"; }
 
   const reviewHTML = scenarios.map(s => `
     <div class="review-row">
@@ -292,21 +475,32 @@ function showResult() {
 
   getApp().innerHTML = `
     <div class="scene-card" style="text-align:center;padding:2rem 1.5rem;">
-      <span class="emoji-result">${score === total ? '🎉' : score >= 3 ? '👍' : '📚'}</span>
+      <div style="display:flex;justify-content:center;align-items:flex-end;gap:8px;margin-bottom:0.75rem;">
+        ${CAT_SVG}${OWL_SVG}
+      </div>
+      <div style="font-size:36px;margin-bottom:0.25rem;">${emoji}</div>
       <div class="result-title">ゲームクリア！</div>
       <div class="stat-row">
-        <div class="stat-box"><div class="stat-num" style="color:#534AB7;">${score}</div><div class="stat-lbl">正解数</div></div>
-        <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-lbl">総問題数</div></div>
-        <div class="stat-box"><div class="stat-num" style="color:${color};">${pct}%</div><div class="stat-lbl">正答率</div></div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:#534AB7;">${score}</div>
+          <div class="stat-lbl">正解数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:#888;">${total}</div>
+          <div class="stat-lbl">総問題数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="color:${color};">${pct}%</div>
+          <div class="stat-lbl">正答率</div>
+        </div>
       </div>
-      <div style="font-size:14px;color:${color};padding:0.5rem 0.75rem;background:#f5f5f5;border-radius:8px;">${msg}</div>
+      <div style="font-size:14px;font-weight:700;color:${color};padding:0.75rem 1rem;background:#f8f6ff;border-radius:12px;">${msg}</div>
     </div>
     <div class="scene-card">
-      <div style="font-size:13px;font-weight:500;color:#666;margin-bottom:0.75rem;">今回学んだ発表内容まとめ</div>
+      <div style="font-size:13px;font-weight:700;color:#888;margin-bottom:0.75rem;">📝 今回学んだ発表内容まとめ</div>
       ${reviewHTML}
     </div>
-    <button class="restart-btn" onclick="restartGame()">&#8635; もう一度挑戦する</button>
-  `;
+    <button class="restart-btn" onclick="restartGame()">🔄 もう一度挑戦する</button>`;
 }
 
 function restartGame() {

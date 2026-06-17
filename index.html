@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Databricks Data + AI Summit 2026 学習ゲーム</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f0eeff 0%, #e8f5f0 50%, #fff3e8 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #2a2a2a;
+  }
+
+  .card {
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 8px 40px rgba(83,74,183,0.12);
+    padding: 3rem 2.5rem;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mascots {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .mascot-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #aaa;
+    margin-top: 4px;
+  }
+  .mascot-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  .speech-bubble {
+    position: relative;
+    border-radius: 14px;
+    padding: 0.5rem 0.9rem;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    border-width: 7px 6px 0;
+    border-style: solid;
+  }
+  .bubble-cat { background: #FFF3E8; color: #8a4a00; left: 0; }
+  .bubble-cat::after { left: 18px; border-color: #FFF3E8 transparent transparent; }
+  .bubble-owl { background: #EEEDFE; color: #3C3489; right: 0; }
+  .bubble-owl::after { right: 18px; border-color: #EEEDFE transparent transparent; }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #3C3489;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+  .info-box {
+    background: #f8f6ff;
+    border-radius: 14px;
+    padding: 0.9rem 0.5rem;
+  }
+  .info-box .num { font-size: 22px; font-weight: 800; color: #534AB7; }
+  .info-box .lbl { font-size: 11px; color: #888; font-weight: 600; margin-top: 2px; }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 99px;
+    background: #EEEDFE;
+    color: #534AB7;
+  }
+  .tag.green { background: #E1F5EE; color: #0F6E56; }
+  .tag.orange { background: #FFF3E8; color: #854F0B; }
+  .tag.blue { background: #E6F1FB; color: #185FA5; }
+  .tag.pink { background: #FBEAF0; color: #993556; }
+
+  .start-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #534AB7, #7F77DD);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 1rem 3rem;
+    border-radius: 99px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(83,74,183,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(83,74,183,0.4);
+  }
+  .start-btn:active { transform: translateY(-1px); }
+
+  .footer {
+    margin-top: 1.5rem;
+    font-size: 12px;
+    color: #aaa;
+    font-weight: 600;
+  }
+  .footer a { color: #7F77DD; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed #ede9ff;
+    margin: 1.5rem 0;
+  }
+
+  .how-to {
+    text-align: left;
+    background: #f8f6ff;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 13px;
+    color: #444;
+    font-weight: 600;
+    line-height: 1.8;
+  }
+  .how-to strong { color: #534AB7; }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="mascots">
+    <div class="mascot-wrap">
+      <div class="speech-bubble bubble-cat">教えてニャ〜！</div>
+      <svg width="72" height="72" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="28" cy="32" rx="20" ry="18" fill="#FFB347"/>
+        <polygon points="12,18 8,6 20,14" fill="#FFB347"/>
+        <polygon points="44,18 48,6 36,14" fill="#FFB347"/>
+        <polygon points="13,17 10,9 19,14" fill="#FF8C69"/>
+        <polygon points="43,17 46,9 37,14" fill="#FF8C69"/>
+        <ellipse cx="22" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+        <ellipse cx="34" cy="30" rx="3.5" ry="4" fill="#2a1a00"/>
+        <ellipse cx="21" cy="29" rx="1.2" ry="1.5" fill="white"/>
+        <ellipse cx="33" cy="29" rx="1.2" ry="1.5" fill="white"/>
+        <ellipse cx="28" cy="35" rx="2.5" ry="1.8" fill="#FF8C69"/>
+        <line x1="28" y1="35" x2="28" y2="38" stroke="#2a1a00" stroke-width="1.2"/>
+        <line x1="10" y1="34" x2="24" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="10" y1="37" x2="24" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="46" y1="34" x2="32" y2="35.5" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <line x1="46" y1="37" x2="32" y2="37" stroke="#7a5000" stroke-width="1" opacity="0.6"/>
+        <ellipse cx="16" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+        <ellipse cx="40" cy="38" rx="4" ry="2.5" fill="#FF8C69" opacity="0.5"/>
+      </svg>
+      <div class="mascot-label">ニャン</div>
+    </div>
+
+    <div style="font-size:28px;padding-bottom:28px;">💬</div>
+
+    <div class="mascot-wrap">
+      <div class="speech-bubble bubble-owl">一緒に学ぼう！</div>
+      <svg width="72" height="72" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="28" cy="32" rx="18" ry="17" fill="#7F77DD"/>
+        <polygon points="20,16 17,6 24,13" fill="#534AB7"/>
+        <polygon points="36,16 39,6 32,13" fill="#534AB7"/>
+        <ellipse cx="28" cy="36" rx="10" ry="9" fill="#EEEDFE"/>
+        <circle cx="21" cy="28" r="7" fill="white"/>
+        <circle cx="35" cy="28" r="7" fill="white"/>
+        <circle cx="21" cy="28" r="4.5" fill="#2a1a5e"/>
+        <circle cx="35" cy="28" r="4.5" fill="#2a1a5e"/>
+        <circle cx="22.5" cy="26.5" r="1.5" fill="white"/>
+        <circle cx="36.5" cy="26.5" r="1.5" fill="white"/>
+        <polygon points="28,33 25,37 31,37" fill="#EF9F27"/>
+        <ellipse cx="12" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(-15 12 38)"/>
+        <ellipse cx="44" cy="38" rx="5" ry="8" fill="#534AB7" transform="rotate(15 44 38)"/>
+      </svg>
+      <div class="mascot-label">フクちゃん</div>
+    </div>
+  </div>
+
+  <h1>Databricks<br>Data + AI Summit 2026</h1>
+  <p class="subtitle">シナリオで学ぶ最新発表ゲーム 🎮</p>
+
+  <div class="info-grid">
+    <div class="info-box"><div class="num">5</div><div class="lbl">シーン</div></div>
+    <div class="info-box"><div class="num">20</div><div class="lbl">選択肢</div></div>
+    <div class="info-box"><div class="num" style="font-size:18px;">🐱🦉</div><div class="lbl">キャラクター</div></div>
+  </div>
+
+  <div class="topics">
+    <span class="tag">📌 Lakebase</span>
+    <span class="tag green">📌 Agent Bricks</span>
+    <span class="tag orange">📌 Genie Ontology</span>
+    <span class="tag blue">📌 OpenSharing</span>
+    <span class="tag pink">📌 Lakehouse//RT & LTAP</span>
+  </div>
+
+  <div class="how-to">
+    <strong>遊び方：</strong><br>
+    ニャンとフクちゃんの会話を読んで、<br>
+    四択クイズに答えよう！<br>
+    正解すると豆知識も教えてもらえるよ 💡
+  </div>
+
+  <a href="databricks_dais2026_game.html" class="start-btn">🚀 ゲームをはじめる</a>
+
+  <hr class="divider">
+
+  <p class="footer">
+    Data + AI Summit 2026 | San Francisco, June 15–18<br>
+    <a href="https://www.databricks.com/dataaisummit" target="_blank">databricks.com/dataaisummit</a>
+  </p>
+</div>
+
+</body>
+</html>
